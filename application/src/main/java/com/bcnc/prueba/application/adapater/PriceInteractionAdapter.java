@@ -1,6 +1,6 @@
 package com.bcnc.prueba.application.adapater;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
 import com.bcnc.prueba.application.port.PriceInteractionPort;
 import com.bcnc.prueba.application.port.PricePort;
@@ -20,8 +20,8 @@ public class PriceInteractionAdapter implements PriceInteractionPort {
     }
     
     @Override
-    public Price getPrice(Date startDate, Date endDate, Long brandId, Long PriceId) {
-        return port.getPrice(startDate, endDate, brandId, PriceId);
+    public Price getPrice(Timestamp applicationDate, Long productId, Long brandId) {
+            return port.getPrice(applicationDate, productId, brandId);
     }
 
 }

@@ -2,8 +2,8 @@
 package com.bcnc.prueba.application.port;
 
 import com.bcnc.prueba.domain.model.Price;
-import java.sql.Date;
+import java.sql.Timestamp;
 
 public interface PricePort {
-    Price getPrice(Date startDate, Date endDate, Long brandId, Long PriceId);
+    Price getPrice(Timestamp applicationDate, Long productId, Long brandId);
 }

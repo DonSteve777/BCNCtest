@@ -1,12 +1,12 @@
 package com.bcnc.prueba.domain.model;
 
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.sql.Timestamp;
 
 public record Price(
     Long brandId,
-    Date startDate,
-    Date endDate,
+    Timestamp startDate,
+    Timestamp endDate,
     int priceList,
     Long productId,
     int priority,
