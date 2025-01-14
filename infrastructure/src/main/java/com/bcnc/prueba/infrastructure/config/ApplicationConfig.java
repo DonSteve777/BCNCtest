@@ -14,7 +14,7 @@ import jakarta.inject.Singleton;
 
 @Configuration
 @ComponentScan(basePackages = {"com.bcnc.prueba.application", 
-    "com.bcnc.prueba.infrastructure.price.persistence.repository" } // Asegúrate de incluir este paquete
+    "com.bcnc.prueba.infrastructure.price.persistence.repository" }
     , includeFilters = {
         @ComponentScan.Filter(type = FilterType.ANNOTATION, value = Singleton.class),
         @ComponentScan.Filter(type = FilterType.ANNOTATION, value = Repository.class)
