@@ -13,6 +13,11 @@ Para ejecutar el proyecto, sigue estos pasos:
    ```bash
    cd infrastructure
    mvn spring-boot:run
+
+Ejecución de los test:
+Desde el directorio raíz:
+   ```
+   mvn test
    ```
 
 Este es un proyecto multimódulo Maven que sigue la arquitectura hexagonal. Incluye un `pom` raíz con referencias a los tres submódulos: `application`, `domain` e `infrastructure`.
@@ -29,6 +34,7 @@ El proyecto utiliza las siguientes tecnologías:
 - **Jakarta**
 - **Mockito**
 - **H2**
+- **Git** : he incluido un TAG al commit de la entrega
 
 Los datos se cargan automáticamente en H2 al iniciar el proyecto.
 
