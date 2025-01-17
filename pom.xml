@@ -19,9 +19,9 @@
 	</parent>
 
 	<groupId>com.bcnc.prueba</groupId>
-	<artifactId>product-api</artifactId>
+	<artifactId>price-api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>product-api</name>
+	<name>price-api</name>
 	<description>Prueba para BCNC Group</description>
 	<url/>
 	

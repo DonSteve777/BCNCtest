@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<artifactId>product-api</artifactId>
+		<artifactId>price-api</artifactId>
 		<groupId>com.bcnc.prueba</groupId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>

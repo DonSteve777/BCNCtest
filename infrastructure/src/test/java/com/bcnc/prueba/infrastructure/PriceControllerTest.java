@@ -1,18 +1,16 @@
 package com.bcnc.prueba.infrastructure;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.bcnc.prueba.infrastructure.price.exception.PriceNotFoundException;
 import com.bcnc.prueba.infrastructure.price.rest.controller.PriceController;
 import com.bcnc.prueba.infrastructure.price.rest.dto.PriceRequest;
 import com.bcnc.prueba.infrastructure.price.rest.dto.PriceResponse;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -25,7 +23,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
-import java.text.ParseException;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.any;
@@ -35,6 +32,9 @@ import static org.mockito.BDDMockito.given;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
+
+
+// bastaba con un sólo test para cubir el controlador, pero bueno, ya lo dejo así
 @WebMvcTest(PriceController.class)
 class PriceControllerTest {
 
@@ -57,15 +57,19 @@ class PriceControllerTest {
 		objectMapper.setTimeZone(TimeZone.getTimeZone("Europe/Madrid")); //zona horaria
 	}
 	 
-// PRICES
-// -------
-// BRAND_ID         START_DATE                                    END_DATE                        PRICE_LIST                   PRODUCT_ID  PRIORITY                 PRICE           CURR
-// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-// 1         2020-06-14-00.00.00                        2020-12-31-23.59.59                        1                        35455                0                        35.50            EUR
-// 1         2020-06-14-15.00.00                        2020-06-14-18.30.00                        2                        35455                1                        25.45            EUR
-// 1         2020-06-15-00.00.00                        2020-06-15-11.00.00                        3                        35455                1                        30.50            EUR
-// 1         2020-06-15-16.00.00                        2020-12-31-23.59.59                        4                        35455                1                        38.95            EUR
- 
+
+	// utilidad para hacer el GET, los mapeos y comprobar el resultado
+	private void performPriceRequestAndVerify(PriceRequest request, PriceResponse expectedResponse) throws Exception {
+        mockMvc.perform(get("/Prices")
+                .contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isOk())
+                .andExpect(result -> {
+                    PriceResponse response = objectMapper.readValue(result.getResponse().getContentAsString(), PriceResponse.class);
+                    assertThat(response).isEqualTo(expectedResponse);
+                });
+	}
+
 	// - Test 1: petición a las 10:00 del día 14 del producto 35455   para la brand 1 (ZARA)
 	@Test
     void testGetPriceAt10On14th() throws Exception {
@@ -80,14 +84,7 @@ class PriceControllerTest {
 
 		given(port.getPrice(any(), any(), any())).willReturn(expectedPrice);
 
-		mockMvc.perform(get("/Prices")
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(objectMapper.writeValueAsString(request)))
-				.andExpect(status().isOk())
-				.andExpect(result -> {
-					PriceResponse response = objectMapper.readValue(result.getResponse().getContentAsString(), PriceResponse.class);
-					assertThat(response).isEqualTo(expectedResponse);
-				});
+		performPriceRequestAndVerify(request, expectedResponse);
 
 		verify(port).getPrice(any(), any(), any());
 	}
@@ -105,14 +102,7 @@ class PriceControllerTest {
 
 		given(port.getPrice(any(), any(), any())).willReturn(expectedPrice);
 
-		mockMvc.perform(get("/Prices")
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(objectMapper.writeValueAsString(request)))
-				.andExpect(status().isOk())
-				.andExpect(result -> {
-					PriceResponse response = objectMapper.readValue(result.getResponse().getContentAsString(), PriceResponse.class);
-					assertThat(response).isEqualTo(expectedResponse);
-				});
+		performPriceRequestAndVerify(request, expectedResponse);
 
 	}
 	// -    Test 3: petición a las 21:00 del día 14 del producto 35455   para la brand 1 (ZARA)
@@ -130,14 +120,7 @@ class PriceControllerTest {
 
 		given(port.getPrice(any(), any(), any())).willReturn(expectedPrice);
 
-		mockMvc.perform(get("/Prices")
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(objectMapper.writeValueAsString(request)))
-				.andExpect(status().isOk())
-				.andExpect(result -> {
-					PriceResponse response = objectMapper.readValue(result.getResponse().getContentAsString(), PriceResponse.class);
-					assertThat(response).isEqualTo(expectedResponse);
-				});
+		performPriceRequestAndVerify(request, expectedResponse);
 
 	}
 
@@ -156,14 +139,7 @@ class PriceControllerTest {
 
 		given(port.getPrice(any(), any(), any())).willReturn(expectedPrice);
 
-		mockMvc.perform(get("/Prices")
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(objectMapper.writeValueAsString(request)))
-				.andExpect(status().isOk())
-				.andExpect(result -> {
-					PriceResponse response = objectMapper.readValue(result.getResponse().getContentAsString(), PriceResponse.class);
-					assertThat(response).isEqualTo(expectedResponse);
-				});
+		performPriceRequestAndVerify(request, expectedResponse);
 
 	}
 
@@ -181,22 +157,29 @@ class PriceControllerTest {
 
 		given(port.getPrice(any(), any(), any())).willReturn(expectedPrice);
 
-		mockMvc.perform(get("/Prices")
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(objectMapper.writeValueAsString(request)))
-				.andExpect(status().isOk())
-				.andExpect(result -> {
-					PriceResponse response = objectMapper.readValue(result.getResponse().getContentAsString(), PriceResponse.class);
-					assertThat(response).isEqualTo(expectedResponse);
-				});
+		performPriceRequestAndVerify(request, expectedResponse);
 
 	}
 
-	
+	// dada una fecha que no existe,
+	// que devuelva un 404
+	@Test
+    void testPriceNotFound() throws Exception {
+        String dateStr = "2021-06-17-10.00.00"; // Fecha que no existe en los datos
+        Timestamp NotFoundTestDate = new Timestamp(formatter.parse(dateStr).getTime());
+		PriceRequest request = new PriceRequest(NotFoundTestDate, 35455L, 1L);
 
-	
+		given(port.getPrice(any(), any(), any())).willThrow(new PriceNotFoundException(NotFoundTestDate, 35455L, 1L));
 
-	 
+		//testea el http status
+		mockMvc.perform(get("/Prices")
+		.contentType(MediaType.APPLICATION_JSON)
+		.content(objectMapper.writeValueAsString(request)))
+		.andExpect(status().isNotFound());
+    }
+
+
+
 
 
 }

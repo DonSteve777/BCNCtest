@@ -1,0 +1,51 @@
+@startuml
+
+package Application {
+    interface PriceInteractionPort {
+    }
+
+    class PriceInteractionAdapter {
+    }
+    PriceInteractionAdapter ..|> PriceInteractionPort
+
+    interface PricePort {
+    }
+}
+
+package Infrastructure {
+    class PriceController {
+    }
+    
+    class PriceAdapter {
+        + PriceRepository
+        + PriceMapper
+        + PriceNotFoundException
+    }
+    class PriceEntity {
+        <<JPA Entity>>
+    }
+    
+    PriceAdapter ..|> PricePort
+    PriceAdapter --> PriceRepository : Uses
+    PriceAdapter --> PriceMapper : Uses
+    PriceAdapter --> PriceNotFoundException : Throws
+
+    class PriceRepository {
+    }
+    PriceRepository --> PriceEntity : Uses
+
+    class PriceMapper {
+    }
+
+    class PriceNotFoundException {
+    }
+}
+
+package Domain {
+    class Price {
+    }
+}
+
+PriceController --> PriceInteractionPort
+
+@enduml

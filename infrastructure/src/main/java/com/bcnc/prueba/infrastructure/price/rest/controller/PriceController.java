@@ -19,6 +19,8 @@ public class PriceController {
         this.port = port;
     }
 
+// OK -> 200
+// NOT_FOUND -> 404 <- PriceNotFoundException
     @GetMapping()
     public PriceResponse getPrice(@RequestBody PriceRequest request) {
         var price = port.getPrice(request.applicationDate(), 

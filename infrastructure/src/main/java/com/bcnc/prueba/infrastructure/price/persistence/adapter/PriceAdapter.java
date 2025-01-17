@@ -25,9 +25,8 @@ public class PriceAdapter implements PricePort {
 
     @Override
     public Price getPrice(Timestamp applicationDate, Long productId, Long brandId) {
-        PriceEntity priceEntity = repository.findPrice(applicationDate, productId, brandId);
-        if (priceEntity == null)
-            throw new PriceNotFoundException(applicationDate, productId, brandId);
+        PriceEntity priceEntity = repository.findPrice(applicationDate, productId, brandId)
+                .orElseThrow(() -> new PriceNotFoundException(applicationDate, productId, brandId));
         return PriceMapper.toDomain(priceEntity);
     }
 

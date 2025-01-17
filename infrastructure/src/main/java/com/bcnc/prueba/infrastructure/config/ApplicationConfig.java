@@ -8,28 +8,10 @@ import org.springframework.stereotype.Repository;
 
 import com.bcnc.prueba.infrastructure.price.persistence.adapter.PriceAdapter;
 import com.bcnc.prueba.infrastructure.price.persistence.repository.PriceRepository;
-import com.bcnc.prueba.infrastructure.price.persistence.repository.PriceRepositoryImpl;
-
 import jakarta.inject.Singleton;
 
 @Configuration
-@ComponentScan(basePackages = {"com.bcnc.prueba.application", 
-    "com.bcnc.prueba.infrastructure.price.persistence.repository" }
-    , includeFilters = {
-        @ComponentScan.Filter(type = FilterType.ANNOTATION, value = Singleton.class),
-        @ComponentScan.Filter(type = FilterType.ANNOTATION, value = Repository.class)
-    }
+@ComponentScan(basePackages = {"com.bcnc.prueba.application"},
+    includeFilters = @ComponentScan.Filter(type = FilterType.ANNOTATION, value = Singleton.class)
 )
-public class ApplicationConfig {
-
-    @Bean
-    public PriceRepository priceRepository() {
-        return new PriceRepositoryImpl();
-    }
-
-    @Bean
-    public PriceAdapter priceAdapter(PriceRepository repository) {
-        return new PriceAdapter(repository);
-    }
-
-}
+public class ApplicationConfig {}

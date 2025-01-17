@@ -9,7 +9,6 @@ import com.bcnc.prueba.domain.model.Price;
 import jakarta.inject.Singleton;
 
 // anotación de jakarta para no acoplar el framework spring.
-// este componente no va a tener estado, así que puedo usar @Singleton
 @Singleton
 public class PriceInteractionAdapter implements PriceInteractionPort {
 
